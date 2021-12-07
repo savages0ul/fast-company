@@ -11,6 +11,8 @@ const Users = () => {
 
     const renderPhase = (number) => {
         if (number === 0) {
+            const tablelement = document.querySelector('.table');
+            tablelement.hidden = true;
             return 'Никто с тобой не тусанет';
         }
         return number === 1 || number >= 5
@@ -51,7 +53,7 @@ const Users = () => {
         ));
     };
 
-    return numberUsers > 0 ? (
+    return (
         <>
             <h2>
                 <span className={getBadgeClasses()}>{renderPhase(numberUsers)}</span>
@@ -70,10 +72,6 @@ const Users = () => {
                 <tbody>{renderUsers()}</tbody>
             </table>
         </>
-    ) : (
-        <h2>
-            <span className={getBadgeClasses()}>{renderPhase(numberUsers)}</span>
-        </h2>
     );
 };
 
