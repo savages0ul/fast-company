@@ -11,8 +11,8 @@ const Users = () => {
 
     const renderPhase = (number) => {
         if (number === 0) {
-            const tablelement = document.querySelector('.table');
-            tablelement.hidden = true;
+            const tableElement = document.querySelector('.table');
+            tableElement.hidden = true;
             return 'Никто с тобой не тусанет';
         }
         return number === 1 || number >= 5
@@ -26,13 +26,30 @@ const Users = () => {
         return classes;
     };
 
+    const bookMark = (userId) => {
+        const myState = users.map((user) => {
+            if (user._id === userId) {
+                user.bookmark = !user.bookmark;
+                return user;
+            }
+            return user;
+        });
+        setUsers(myState);
+    };
+
+    const bookMarkClasses = (bookmarkValue) => {
+        let classBookMark = '';
+        classBookMark += !bookmarkValue ? 'bi bi-bookmark' : 'bi bi-bookmark-fill';
+        return classBookMark;
+    };
+
     const renderUsers = () => {
         return users.map((user) => (
             <tr key={user._id}>
                 <td>{user.name}</td>
                 <td>
                     {user.qualities.map((qualitie) => (
-                        <div key={qualitie._id} className={`badge bg-${qualitie.color}`}>
+                        <div key={qualitie._id} className={`badge bg-${qualitie.color} m-1`}>
                             {qualitie.name}
                         </div>
                     ))}
@@ -40,6 +57,13 @@ const Users = () => {
                 <td>{user.profession.name}</td>
                 <td>{user.completedMeetings}</td>
                 <td>{user.rate}</td>
+                <td>
+                    <div
+                        type="button"
+                        className={bookMarkClasses(user.bookmark)}
+                        onClick={() => bookMark(user._id)}
+                    ></div>
+                </td>
                 <td>
                     <button
                         type="button"
@@ -66,6 +90,7 @@ const Users = () => {
                         <th scope="col">Профессия</th>
                         <th scope="col">Встретился, раз</th>
                         <th scope="col">Оценка</th>
+                        <th scope="col">Избранное</th>
                         <th></th>
                     </tr>
                 </thead>
