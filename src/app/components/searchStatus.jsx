@@ -1,35 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-const SearchStatus = ({ count }) => {
-    const searchStatus = (number) => {
-        if (number === 0) {
-            const tableElement = document.querySelector(".table");
-            tableElement.hidden = true;
-            return "Никто с тобой не тусанет";
+const SearchStatus = ({ length }) => {
+    const renderPhrase = (number) => {
+        const lastOne = Number(number.toString().slice(-1));
+        if (number > 4 && number < 15) {
+            return "человек тусанет";
         }
-        return number === 1 || number >= 5
-            ? `${number} человек тусанет с тобой сегодня`
-            : `${number} человека тусанут с тобой сегодня`;
+        if (lastOne === 1) return "человек тусанет";
+        if ([2, 3, 4].indexOf(lastOne) >= 0) return "человека тусанут";
+        return "человек тусанет";
     };
-
-    const getBadgeClasses = () => {
-        let classes = "";
-        classes += count === 0 ? "badge bg-danger" : "badge bg-primary";
-        return classes;
-    };
-
     return (
-        <>
-            <h2>
-                <span className={getBadgeClasses()}>{searchStatus(count)}</span>
-            </h2>
-        </>
+        <h2>
+            <span
+                className={"badge " + (length > 0 ? "bg-primary" : "bg-danger")}
+            >
+                {length > 0
+                    ? `${length + " " + renderPhrase(length)}   с тобой сегодня`
+                    : "Никто с тобой не тусанет"}
+            </span>
+        </h2>
     );
 };
-
 SearchStatus.propTypes = {
-    count: PropTypes.number.isRequired
+    length: PropTypes.number
 };
 
 export default SearchStatus;
