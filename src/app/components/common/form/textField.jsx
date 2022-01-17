@@ -7,7 +7,6 @@ const TextField = ({ label, type, name, value, onChange, error }) => {
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
-
     const getInputClasses = () => {
         return 'form-control' + (error ? ' is-invalid' : '');
     };
@@ -44,7 +43,6 @@ const TextField = ({ label, type, name, value, onChange, error }) => {
         </div>
     );
 };
-
 TextField.defaultProps = {
     type: 'text'
 };

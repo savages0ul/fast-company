@@ -6,14 +6,13 @@ const SelectField = ({
     value,
     onChange,
     defaultOption,
-    name,
     options,
-    error
+    error,
+    name
 }) => {
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
-
     const getInputClasses = () => {
         return 'form-select' + (error ? ' is-invalid' : '');
     };
@@ -43,7 +42,7 @@ const SelectField = ({
                 </option>
                 {optionsArray &&
                     optionsArray.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <option value={option.value} key={option.value}>
                             {option.name}
                         </option>
                     ))}
@@ -54,13 +53,13 @@ const SelectField = ({
 };
 
 SelectField.propTypes = {
-    name: PropTypes.string,
+    defaultOption: PropTypes.string,
     label: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
-    defaultOption: PropTypes.string,
+    error: PropTypes.string,
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-    error: PropTypes.string
+    name: PropTypes.string
 };
 
 export default SelectField;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
 import api from '../../api';
@@ -17,21 +17,18 @@ const RegisterForm = () => {
         licence: false
     });
     const [qualities, setQualities] = useState({});
-    const [professions, setProfession] = useState([]);
+    const [professions, setProfession] = useState();
     const [errors, setErrors] = useState({});
-
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
         api.qualities.fetchAll().then((data) => setQualities(data));
     }, []);
-
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
     };
-
     const validatorConfig = {
         email: {
             isRequired: {
@@ -68,11 +65,9 @@ const RegisterForm = () => {
             }
         }
     };
-
     useEffect(() => {
         validate();
     }, [data]);
-
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
@@ -92,22 +87,22 @@ const RegisterForm = () => {
                 label="Электронная почта"
                 name="email"
                 value={data.email}
-                error={errors.email}
                 onChange={handleChange}
+                error={errors.email}
             />
             <TextField
                 label="Пароль"
                 type="password"
                 name="password"
                 value={data.password}
-                error={errors.password}
                 onChange={handleChange}
+                error={errors.password}
             />
             <SelectField
                 label="Выбери свою профессию"
                 defaultOption="Choose..."
-                name="profession"
                 options={professions}
+                name="profession"
                 onChange={handleChange}
                 value={data.profession}
                 error={errors.profession}
@@ -139,9 +134,9 @@ const RegisterForm = () => {
                 Подтвердить <a>лицензионное соглашение</a>
             </CheckBoxField>
             <button
+                className="btn btn-primary w-100 mx-auto"
                 type="submit"
                 disabled={!isValid}
-                className="btn btn-primary w-100 mx-auto"
             >
                 Submit
             </button>
