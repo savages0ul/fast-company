@@ -9,7 +9,7 @@ import UserTable from '../../ui/usersTable';
 import _ from 'lodash';
 const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfession] = useState();
+    const [professions, setProfession] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
