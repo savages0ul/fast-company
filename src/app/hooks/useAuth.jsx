@@ -26,7 +26,6 @@ const AuthProvider = ({ children }) => {
             });
             setTokens(data);
             await createUser({ _id: data.localId, email, ...rest });
-            console.log(data);
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
@@ -38,9 +37,9 @@ const AuthProvider = ({ children }) => {
                     throw errorObject;
                 }
             }
-            // throw new Error();
         }
     }
+
     async function createUser(data) {
         try {
             const { content } = userService.create(data);
@@ -49,6 +48,35 @@ const AuthProvider = ({ children }) => {
             errorCatcher(error);
         }
     }
+
+    async function signIn({ email, password }) {
+        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
+        try {
+            const { data } = await httpAuth.post(url, {
+                email,
+                password,
+                returnSecureToken: true
+            });
+            setTokens(data);
+        } catch (error) {
+            errorCatcher(error);
+            const { code, message } = error.response.data.error;
+            if (code === 400) {
+                if (message === 'EMAIL_NOT_FOUND') {
+                    const errorObject = {
+                        email: 'Пользователь с таким Email не существует'
+                    };
+                    throw errorObject;
+                } else if (message === 'INVALID_PASSWORD') {
+                    const errorObject = {
+                        password: 'Пароль введен неверно'
+                    };
+                    throw errorObject;
+                }
+            }
+        }
+    }
+
     function errorCatcher(error) {
         const { message } = error.response.data;
         setError(message);
@@ -61,7 +89,7 @@ const AuthProvider = ({ children }) => {
     }, [error]);
 
     return (
-        <AuthContext.Provider value={{ signUp, currentUser }}>
+        <AuthContext.Provider value={{ signUp, currentUser, signIn }}>
             {children}
         </AuthContext.Provider>
     );
