@@ -26,6 +26,7 @@ module.exports = {
             'single',
             {
                 allowTemplateLiterals: true
+                // avoidEscape: true
             }
         ]
     }
